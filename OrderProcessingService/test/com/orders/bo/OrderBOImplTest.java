@@ -2,8 +2,9 @@ package com.orders.bo;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,15 +38,15 @@ public class OrderBOImplTest {
 
 	@Test
 	public void placeOrder_Should_Create_An_Order() throws SQLException, BOException {
-		Order order = new Order();
-		when(dao.create(order)).thenReturn(1);
-		boolean result = bo.placeOrder(order);
+		// Order order = new Order();
+		when(dao.create(any(Order.class))).thenReturn(1);
+		boolean result = bo.placeOrder(any(Order.class)); // any(Order.class)
 
 		assertTrue(result);
 		/**
 		 * atLeast() and times() give an Implementation to VerificationMode
 		 */
-		verify(dao, atLeast(1)).create(order); //or times(1)
+		verify(dao, atLeast(1)).create(any(Order.class)); // or times(1)
 	}
 
 	@Test
@@ -97,7 +98,7 @@ public class OrderBOImplTest {
 	@SuppressWarnings("unchecked")
 	@Test(expected = BOException.class)
 	public void cancelOrder_Should_Throw_BOException_onRead() throws SQLException, BOException {
-		when(dao.read(123)).thenThrow(SQLException.class);
+		when(dao.read(anyInt())).thenThrow(SQLException.class);
 		bo.cancelOrder(123);
 	}
 
