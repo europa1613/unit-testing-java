@@ -18,10 +18,13 @@ import com.orders.dto.Order;
 public class OrderBOImplTest {
 	@Mock
 	IOrderDAO dao;
+	private OrderBOImpl bo;
 
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
+		bo = new OrderBOImpl();
+		bo.setDao(dao);
 	}
 
 	@After
@@ -30,14 +33,21 @@ public class OrderBOImplTest {
 
 	@Test
 	public void placeOrder_Should_Create_An_Order() throws SQLException, BOException {
-		OrderBOImpl bo = new OrderBOImpl();
-		bo.setDao(dao);
-
 		Order order = new Order();
 		when(dao.create(order)).thenReturn(1);
 		boolean result = bo.placeOrder(order);
-		
+
 		assertTrue(result);
+		verify(dao).create(order);
+	}
+
+	@Test
+	public void placeOrder_Should_not_Create_An_Order() throws SQLException, BOException {
+		Order order = new Order();
+		when(dao.create(order)).thenReturn(0);
+		boolean result = bo.placeOrder(order);
+
+		assertFalse(result);
 		verify(dao).create(order);
 	}
 
