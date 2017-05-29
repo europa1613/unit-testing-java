@@ -1,6 +1,7 @@
 package com.mockito.scrapbook;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -29,6 +30,7 @@ public class ATest {
 
 	@Test
 	public void usesVoidMethodShouldCall_BVoidMethod() throws Exception {
+		doNothing().when(b).voidMethod();
 		assertEquals(0, a.usesVoidMethod());
 		verify(b, times(1)).voidMethod();
 	}
