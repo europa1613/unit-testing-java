@@ -59,4 +59,52 @@ public class OrderBOImplTest {
 		bo.placeOrder(order);
 	}
 
+	@Test
+	public void cancelOrder_Should_Cancel() throws SQLException, BOException {
+		Order order = new Order();
+		when(dao.read(123)).thenReturn(order);
+		when(dao.update(order)).thenReturn(1);
+
+		boolean result = bo.cancelOrder(123);
+
+		assertTrue(result);
+
+		verify(dao).read(123);
+		verify(dao).update(order);
+	}
+
+	@Test
+	public void cancelOrder_Should_not_Cancel() throws SQLException, BOException {
+		Order order = new Order();
+		when(dao.read(123)).thenReturn(order);
+		when(dao.update(order)).thenReturn(0);
+
+		boolean result = bo.cancelOrder(123);
+
+		assertFalse(result);
+
+		verify(dao).read(123);
+		verify(dao).update(order);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test(expected = BOException.class)
+	public void cancelOrder_Should_Throw_BOException_onRead() throws SQLException, BOException {
+		when(dao.read(123)).thenThrow(SQLException.class);
+		bo.cancelOrder(123);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test(expected = BOException.class)
+	public void cancelOrder_Should_Throw_BOException_onUpdate() throws SQLException, BOException {
+		Order order = new Order();
+		when(dao.read(123)).thenReturn(order);
+		when(dao.update(order)).thenThrow(SQLException.class);
+
+		bo.cancelOrder(123);
+
+		verify(dao).read(123);
+		verify(dao).update(order);
+	}
+
 }
