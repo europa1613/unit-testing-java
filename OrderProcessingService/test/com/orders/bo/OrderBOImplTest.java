@@ -51,4 +51,12 @@ public class OrderBOImplTest {
 		verify(dao).create(order);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test(expected = BOException.class)
+	public void placeOrder_Should_Throw_BOException() throws SQLException, BOException {
+		Order order = new Order();
+		when(dao.create(order)).thenThrow(SQLException.class);
+		bo.placeOrder(order);
+	}
+
 }
