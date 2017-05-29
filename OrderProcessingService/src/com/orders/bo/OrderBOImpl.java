@@ -59,9 +59,9 @@ public class OrderBOImpl implements IOrderBO {
 	/**
 	 * @return the dao
 	 */
-	public IOrderDAO getDao() {
+	/*public IOrderDAO getDao() {
 		return dao;
-	}
+	}*/
 
 	/**
 	 * @param dao

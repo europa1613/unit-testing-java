@@ -1,7 +1,9 @@
 package com.orders.bo;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.sql.SQLException;
 
@@ -93,7 +95,7 @@ public class OrderBOImplTest {
 		when(dao.read(123)).thenThrow(SQLException.class);
 		bo.cancelOrder(123);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test(expected = BOException.class)
 	public void cancelOrder_Should_Throw_BOException_onUpdate() throws SQLException, BOException {
@@ -105,6 +107,31 @@ public class OrderBOImplTest {
 
 		verify(dao).read(123);
 		verify(dao).update(order);
+	}
+
+	@Test
+	public void deleteOrder_should_delete() throws SQLException, BOException {
+		when(dao.delete(123)).thenReturn(1);
+		boolean result = bo.deleteOrder(123);
+
+		assertTrue(result);
+		verify(dao).delete(123);
+	}
+
+	@Test
+	public void deleteOrder_should_not_delete() throws SQLException, BOException {
+		when(dao.delete(123)).thenReturn(0);
+		boolean result = bo.deleteOrder(123);
+
+		assertFalse(result);
+		verify(dao).delete(123);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test(expected = BOException.class)
+	public void deleteOrder_should_throw_BOException() throws SQLException, BOException {
+		when(dao.delete(123)).thenThrow(SQLException.class);
+		bo.deleteOrder(123);
 	}
 
 }
