@@ -2,6 +2,8 @@ package com.orders.bo;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +42,10 @@ public class OrderBOImplTest {
 		boolean result = bo.placeOrder(order);
 
 		assertTrue(result);
-		verify(dao).create(order);
+		/**
+		 * atLeast() and times() give an Implementation to VerificationMode
+		 */
+		verify(dao, atLeast(1)).create(order); //or times(1)
 	}
 
 	@Test
