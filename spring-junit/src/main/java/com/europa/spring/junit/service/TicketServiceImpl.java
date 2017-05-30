@@ -1,10 +1,15 @@
 package com.europa.spring.junit.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.europa.spring.junit.dao.ITicketDAO;
 import com.europa.spring.junit.dto.Ticket;
 
+@Component
 public class TicketServiceImpl implements ITicketService {
 
+	@Autowired
 	private ITicketDAO dao;
 
 	public int buyTickt(String name, String phone) {
