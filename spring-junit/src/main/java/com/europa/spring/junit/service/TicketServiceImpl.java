@@ -16,7 +16,7 @@ public class TicketServiceImpl implements ITicketService {
 		Ticket ticket = new Ticket();
 		ticket.setPassengerName(name);
 		ticket.setPhone(phone);
-		return dao.creatTicket(ticket);
+		return getDao().creatTicket(ticket);
 	}
 
 	/**
